@@ -3,38 +3,34 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
-def question_answer():
-    print("Hello there what can i help you?")
-    fqa ={
-        "hii":"Hello, what can i help you",
-       "python":"python langauage",
-       "help":"help"
-        }
-    stop_words = set(stopwords.words("english"))
-    le = WordNetLemmatizer()
+def answer_questions():
+    faq_data = {
+        "cost": "The application is free, with no hidden charges.",
+        "lessons": "Lessons are categorized into beginner, intermediate, and advanced levels.",
+        "compatibility": "Compatible with Chrome, Firefox, and Safari.",
+        "internet": "An internet connection is necessary to use all features.",
+        "support": "Contact our support team via email at support@help.com."
+    }
+
+    nltk.download('punkt')
+    nltk.download('stopwords')
+    stop_words = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
+
     while True:
-        question = input("you:- ")
-        if not question.strip():
-            print("Bot: Thank you! Have a good day!")
+        question = input("\nHi there! How can I help you today?\nEnter your question (or just hit enter to quit): ").strip()
+        if not question:
+            print("\nThank you! Have a good day!")
             break
-        pro_que= [le.lemmatize(word.lower()) for word in word_tokenize(question) if word not in stop_words]
-
-        found_match = False
-
-        for keyword , answer in fqa.items():
-            le_ke = [le.lemmatize(key) for key in keyword.split()]
-
-            for key in le_ke:
-                if key in pro_que:
-                    found_match=True
-                    best_match=answer
-                    break
-            if found_match:
+        
+        processed_question = set(lemmatizer.lemmatize(word.lower()) for word in word_tokenize(question) if word.lower() not in stop_words)
+        
+        for keywords, answer in faq_data.items():
+            if any(lemmatizer.lemmatize(kw) in processed_question for kw in keywords.split()):
+                print(answer)
                 break
-
-        if found_match:
-            print("Bot:- ",best_match)
         else:
-            print("Bot:Sorry, I couldn't find an answer to that question.")
+            print("Sorry, I couldn't find an answer to your question. Please try rephrasing.")
 
-question_answer()
+if _name_ == "_main_":
+    answer_questions()
