@@ -1,5 +1,5 @@
 class Node:
-    def _init_(self, data, level, fval):
+    def __init__(self, data, level, fval):
         self.data = data
         self.fval = fval
         self.level = level
@@ -44,7 +44,7 @@ class Node:
 
 
 class Puzzle:
-    def _init_(self):
+    def __init__(self):
         self.n = 3
         self.open = []
         self.closed = []
